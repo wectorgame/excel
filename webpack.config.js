@@ -6,13 +6,13 @@ const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const isProd = process.env.NODE_ENV === "production";
 const isDev = !isProd;
-const filename = ext => isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`
+const filename = (ext) => (isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`);
 module.exports = {
   context: path.resolve(__dirname, "src"),
   mode: "development",
-  entry: "./index.js",
+  entry: ['@babel/polyfill',"./index.js"],
   output: {
-    filename: filename('js'),
+    filename: filename("js"),
     path: path.resolve(__dirname, "dist"),
   },
   resolve: {
@@ -22,20 +22,24 @@ module.exports = {
       "@core": path.resolve(__dirname, "src/core"),
     },
   },
-  devtool: isDev ? 'source-map': false,
-  devServer:{
-      port:3000,
-    hot:isDev
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 9000,
+    hot: isDev,
+    open: true,
   },
 
+  devtool: isDev ? "source-map" : false,
+ 
   plugins: [
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({
       template: "index.html",
-      minify:{
-          removeComments: isProd,
-          collapseWhitespace: isProd,
-      }
+      minify: {
+        removeComments: isProd,
+        collapseWhitespace: isProd,
+      },
     }),
     new CopyPlugin({
       patterns: [
@@ -46,7 +50,7 @@ module.exports = {
       ],
     }),
     new MiniCssExtractPlugin({
-      filename: filename('css'),
+      filename: filename("css"),
     }),
   ],
   module: {
@@ -57,7 +61,13 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [{
+            loader: MiniCssExtractPlugin.loader,
+            options:{
+                hmr: isDev,
+                reloadAll:true
+            }
+        }, "css-loader", "sass-loader"],
       },
       {
         test: /\.m?js$/,
