@@ -6,6 +6,8 @@
         "node":true
     },
     "rules":{
+        "quotes": "off",
+        "linebreak-style": "off",
         
     },
     "extends": ["eslint:recommended", "google"]
