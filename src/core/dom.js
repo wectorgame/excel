@@ -33,6 +33,14 @@ export class Dom {
   }
   /**
    *
+   * @param {*} eventType
+   * @param {*} callback
+   */
+  on(eventType, callback) {
+    this.$el.addEventListener(eventType, callback);
+  }
+  /**
+   *
    * @param {@} node
    * @return {@}
    */
