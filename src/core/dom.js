@@ -41,6 +41,14 @@ export class Dom {
   }
   /**
    *
+   * @param {*} eventType
+   * @param {*} callback
+   */
+  off(eventType, callback) {
+    this.$el.removeEventListener(eventType, callback);
+  }
+  /**
+   *
    * @param {@} node
    * @return {@}
    */
