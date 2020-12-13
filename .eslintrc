@@ -8,6 +8,11 @@
     "rules":{
         "quotes": "off",
         "linebreak-style": "off",
+        "operator-linebreak": "off",
+        "no-debugger": "off",
+        "object-curly-spacing":"off",
+        "valid-jsdoc":"off"
+        
         
     },
     "extends": ["eslint:recommended", "google"]
