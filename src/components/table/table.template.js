@@ -16,7 +16,9 @@ function toCell() {
  */
 function toColumn(col) {
   return `<div class=column>
-    ${col}</div>`;
+    ${col}
+    <div class="col-resize" data-resize="col"></div>
+    </div>`;
 }
 /**
  * @param {*} content
@@ -24,10 +26,17 @@ function toColumn(col) {
  * @return {string} создание рядов
  */
 function createRow(content, index) {
-  return `<div class="row">
-    <div class="row-info">${index ? index: ''}</div>
-    <div class="row-data">${content}</div>
-          </div>`;
+  const resize = index ?
+'<div class="row-resize" data-resize="row"></div>' : '';
+  return `
+    <div class="row">
+      <div class="row-info">
+        ${index ? index : ''}
+        ${resize}
+      </div>
+      <div class="row-data">${content}</div>
+    </div>
+  `;
 }
 /**
  *
@@ -58,7 +67,7 @@ export function createTable(rowsCount = 15) {
   for (let i = 0; i < colsCount; i++) {
     cols.push(createCol(String.fromCharCode(CODES.A + i)));
   } */
-  rows.push(createRow(null, cols));
+  rows.push(createRow(cols, null));
   for (let i = 0; i < rowsCount; i++) {
     rows.push(createRow(cells, i+1));
   }
