@@ -3,7 +3,7 @@
  */
 export class Dom {
   /**
-   *
+   * назначение элемента
    * @param {*} selector
    */
   constructor(selector) {
@@ -14,6 +14,7 @@ export class Dom {
         : selector;
   }
   /**
+   * заполнение html
    * @return {@}
    * @param {*} html
    */
@@ -32,7 +33,7 @@ export class Dom {
     return this;
   }
   /**
-   *
+   * добавление события
    * @param {*} eventType
    * @param {*} callback
    */
@@ -40,7 +41,7 @@ export class Dom {
     this.$el.addEventListener(eventType, callback);
   }
   /**
-   *
+   * удаление события
    * @param {*} eventType
    * @param {*} callback
    */
@@ -48,7 +49,7 @@ export class Dom {
     this.$el.removeEventListener(eventType, callback);
   }
   /**
-   *
+   * добавляет элементы после последнего потомка
    * @param {@} node
    * @return {@}
    */
@@ -63,10 +64,48 @@ export class Dom {
     }
     return this;
   }
+  /**
+   * @return {*}
+   */
+  get data() {
+    return this.$el.dataset;
+  }
+  /**
+   * ближайщий элемент от текущего через дом
+   * @param {*} selector
+   * @return {*}
+   */
+  closest(selector) {
+    return $(this.$el.closest(selector));
+  }
+  /**
+   * возвращаем координаты
+   * @return {*}
+   */
+  getCoords() {
+    return this.$el.getBoundingClientRect();
+  }
+  /**
+   * @return {*}
+   * @param {*} selector
+   */
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector);
+  }
+  /**
+   * передаем объект свойст css
+   * @param {*} styles
+   */
+  css(styles = {}) {
+    const keys = Object.keys(styles);
+    keys.forEach((key) => {
+      this.$el.style[key] = styles[key];
+    });
+  }
 }
-$("div").html("<h1>test</h1>").clear();
+
 /**
- * event.target
+ * получение нужного нам элемента через дом
  * @param {*} selector
  * @return {@}
  */

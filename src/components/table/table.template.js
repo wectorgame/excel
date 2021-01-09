@@ -5,18 +5,21 @@ const CODES = {
 /**
  * @return {string} создание клеток
  */
-function toCell() {
+function toCell(_, col) {
   return `
-    <div class="cell" contenteditable=""></div>
+    <div class="cell" contenteditable="" data-col="${col}"></div>
     `;
 }
 /**
  * @param {*} col
  * @return {string} создание колонок
  */
-function toColumn(col) {
-  return `<div class=column>
-    ${col}</div>`;
+function toColumn(col, index) {
+  return `<div class="column unselected" 
+  data-type="resizable" data-col="${index}">
+    ${col}
+    <div class="col-resize" data-resize="col"></div>
+    </div>`;
 }
 /**
  * @param {*} content
@@ -24,10 +27,18 @@ function toColumn(col) {
  * @return {string} создание рядов
  */
 function createRow(content, index) {
-  return `<div class="row">
-    <div class="row-info">${index ? index: ''}</div>
-    <div class="row-data">${content}</div>
-          </div>`;
+  const resize = index ?
+'<div class="row-resize" data-resize="row"></div>' : '';
+  const cell = index ? `data-type="cells"` : '';
+  return `
+    <div class="row" data-type="resizable">
+      <div class="row-info unselected">
+        ${index ? index : ''}
+        ${resize}
+      </div>
+      <div class="row-data" ${cell}>${content}</div>
+    </div>
+  `;
 }
 /**
  *
@@ -58,7 +69,7 @@ export function createTable(rowsCount = 15) {
   for (let i = 0; i < colsCount; i++) {
     cols.push(createCol(String.fromCharCode(CODES.A + i)));
   } */
-  rows.push(createRow(null, cols));
+  rows.push(createRow(cols, null));
   for (let i = 0; i < rowsCount; i++) {
     rows.push(createRow(cells, i+1));
   }
