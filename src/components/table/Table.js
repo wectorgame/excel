@@ -33,9 +33,10 @@ export class Table extends ExcelComponent {
       /*  const $parent = $resizer.closest('.column') // still bad */
       const $parent = $resizer.closest('[data-type="resizable"]');
       const coords = $parent.getCoords();
-      let valueHeight;
-      let valueWidth;
-      $resizer.css({ opacity: 1, bottom: "-5000px" });
+      const type = $resizer.data.resize;
+      const sideProp = type === "col" ? "bottom" : "right";
+      let value;
+      $resizer.css({ opacity: 1, [sideProp]: "-5000px" });
       // моя реализация
       /*  const rowData = $resizer.closest(".row-data").$el;
       const currentCol = Array.from(rowData.childNodes).indexOf($parent.$el);
@@ -49,24 +50,27 @@ export class Table extends ExcelComponent {
           .map((elem)=> elem[0]); */
       const cellsWidth = this.$root.findAll(`[data-col="${$parent.data.col}"]`);
       document.onmousemove = (e) => {
-        const delta = e.pageX - coords.right;
-        const gamma = e.pageY - coords.bottom;
-        /* currentCells.forEach((elem)=>
-          elem.style.width = coords.width + delta + "px"); */
-        valueWidth = coords.width + delta;
-        valueHeight = coords.height + gamma;
-        $resizer.css({ right: -delta + "px" });
+        if (type === "row") {
+          const delta = e.pageY - coords.bottom;
+          value = coords.height + delta;
+          $resizer.css({ bottom: -delta + "px" });
+        } else {
+          const delta = e.pageX - coords.right;
+          value = coords.width + delta;
+          $resizer.css({ right: -delta + "px" });
+        }
       };
       document.onmouseup = () => {
         document.onmousemove = null;
         document.onmouseup = null;
-        if ($resizer.data.resize == "row") {
-          $parent.css({ height: valueHeight + "px" });
+        if (type === "row") {
+          $parent.css({ height: value + "px" });
+        } else {
+          $parent.css({ width: value + "px" });
+          cellsWidth.forEach((el) => {
+            el.style.width = value + "px";
+          });
         }
-        $parent.css({ width: valueWidth + "px" });
-        cellsWidth.forEach((el) => {
-          el.style.width = valueWidth + "px";
-        });
         $resizer.css({ opacity: 0, bottom: 0, right: 0 });
       };
     }
