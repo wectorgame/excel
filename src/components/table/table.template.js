@@ -14,14 +14,9 @@ function toCell(_, col) {
  * @param {*} col
  * @return {string} создание колонок
  */
-<<<<<<< Updated upstream
 function toColumn(col, index) {
   return `<div class="column unselected" 
   data-type="resizable" data-col="${index}">
-=======
-function toColumn(col) {
-  return `<div class=column>
->>>>>>> Stashed changes
     ${col}
     <div class="col-resize" data-resize="col"></div>
     </div>`;
@@ -32,7 +27,6 @@ function toColumn(col) {
  * @return {string} создание рядов
  */
 function createRow(content, index) {
-<<<<<<< Updated upstream
   const resize = index ?
 '<div class="row-resize" data-resize="row"></div>' : '';
   const cell = index ? `data-type="cells"` : '';
@@ -45,16 +39,6 @@ function createRow(content, index) {
       <div class="row-data" ${cell}>${content}</div>
     </div>
   `;
-=======
-  const resize = index ? '<div class="row-resize" data-resize="row"></div>': '';
-  return `<div class="row">
-    <div class="row-info">
-    ${index ? index: ''}
-    ${resize}
-    </div>
-    <div class="row-data">${content}</div>
-          </div>`;
->>>>>>> Stashed changes
 }
 /**
  *
