@@ -5,17 +5,18 @@ const CODES = {
 /**
  * @return {string} создание клеток
  */
-function toCell() {
+function toCell(_, col) {
   return `
-    <div class="cell" contenteditable=""></div>
+    <div class="cell" contenteditable="" data-col="${col}"></div>
     `;
 }
 /**
  * @param {*} col
  * @return {string} создание колонок
  */
-function toColumn(col) {
-  return `<div class=column>
+function toColumn(col, index) {
+  return `<div class="column unselected" 
+  data-type="resizable" data-col="${index}">
     ${col}
     <div class="col-resize" data-resize="col"></div>
     </div>`;
@@ -28,13 +29,14 @@ function toColumn(col) {
 function createRow(content, index) {
   const resize = index ?
 '<div class="row-resize" data-resize="row"></div>' : '';
+  const cell = index ? `data-type="cells"` : '';
   return `
-    <div class="row">
-      <div class="row-info">
+    <div class="row" data-type="resizable">
+      <div class="row-info unselected">
         ${index ? index : ''}
         ${resize}
       </div>
-      <div class="row-data">${content}</div>
+      <div class="row-data" ${cell}>${content}</div>
     </div>
   `;
 }
